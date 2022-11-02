@@ -17,7 +17,7 @@ import PayBar from '../component/PayBar';
 import FoodItem from '../component/FoodItem';
 
 const Home = ({navigation}) => {
-  const {products, addToCart, removeFromCart, total} = useOrder();
+  const {addToCart, total} = useOrder();
   const [currentPageIndex , setCurrentPageIndex] = useState(0); 
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const spinanim = useRef(new Animated.Value(0)).current;

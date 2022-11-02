@@ -1,18 +1,16 @@
-import React, {useRef, useState} from 'react';
+import React from 'react';
 import {
   FlatList,
   StyleSheet,
   View,
-  TouchableOpacity,
   Image,
-  Animated,
   Text,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import useOrder from '../hooks/OrderContext';
 
 const Pay = ({navigation}) => {
-  const {products, addToCart, removeFromCart, total} = useOrder();
+  const {products, total} = useOrder();
 
   const renderItem = ({item}) => {
     return (
