@@ -30,7 +30,6 @@ const Home = ({navigation}) => {
   const fastFood = [
     {
       id: '1',
-      color: 'red',
       title: 'FRIES',
       price: 4,
       cardImage: Images.friedBig,
@@ -40,7 +39,6 @@ const Home = ({navigation}) => {
     },
     {
       id: '2',
-      color: 'green',
       title: 'LATTE',
       price: 3,
       cardImage: Images.coke,
@@ -50,7 +48,6 @@ const Home = ({navigation}) => {
     },
     {
       id: '3',
-      color: 'blue',
       title: 'BURGER',
       price: 6,
       cardImage: Images.burgerBig,
