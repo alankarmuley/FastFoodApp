@@ -7,10 +7,10 @@ import {Images, Colors} from '@common';
 const Header = () => {
   return (
     <View style={styles.btnContainer}>
-      <ButtonImage imageSoruce={Images.note} />
-      <ButtonImage imageSoruce={Images.burger} />
-      <ButtonImage imageSoruce={Images.cup} />
-      <ButtonImage imageSoruce={Images.link} />
+      <ButtonImage imageSource={Images.note} />
+      <ButtonImage imageSource={Images.burger} />
+      <ButtonImage imageSource={Images.cup} />
+      <ButtonImage imageSource={Images.link} />
     </View>
   );
 };

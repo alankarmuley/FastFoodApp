@@ -1,17 +1,17 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import React from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 import {Images} from '@common';
 import ButtonImage from './ButtonImage';
 const AddressBar = () => {
   return (
     <View style={styles.container}>
-      <ButtonImage imageSoruce={Images.marker} />
+      <ButtonImage imageSource={Images.marker} />
       <View style={styles.textContainer}>
         <Text numberOfLines={2}>
-          Dongcheng District Metro {'\n'} Cultural Building
+          Dongcheng District Metro{'\n'}Cultural Building
         </Text>
       </View>
-      <ButtonImage imageSoruce={Images.phone} />
+      <ButtonImage imageSource={Images.phone} />
     </View>
   );
 };

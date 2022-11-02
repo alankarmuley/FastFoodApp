@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
   },
   starContainer: {
     position: 'absolute',
-    height: 120,
-    width: 100,
+    height: 180,
+    width: 120,
   },
   item: {
     flex: 1,

@@ -1,12 +1,12 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, Image} from 'react-native';
 
-const ButtonImage = ({imageSoruce, containerStyle}) => {
+const ButtonImage = ({imageSource, containerStyle}) => {
   return (
     <TouchableOpacity style={[styles.container, containerStyle]}>
       <Image
         resizeMode="contain"
-        source={imageSoruce}
+        source={imageSource}
         style={styles.btnImage}
       />
     </TouchableOpacity>

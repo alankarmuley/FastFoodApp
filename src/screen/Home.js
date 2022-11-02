@@ -2,9 +2,9 @@ import React, {useRef, useState} from 'react';
 import {
   FlatList,
   StyleSheet,
-  TouchableOpacity,
   Image,
   Animated,
+  Pressable,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Images, Constants} from '@common';
@@ -80,7 +80,7 @@ const Home = ({navigation}) => {
   const onMomentumScrollEnd = () => {
     Animated.timing(fadeAnim, {
       toValue: 1,
-      duration: 300,
+      duration: 1600,
       useNativeDriver: true,
     }).start();
     Animated.timing(spinanim, {
@@ -96,9 +96,9 @@ const Home = ({navigation}) => {
 
   const AddButton = React.memo(({onPress}) => {
     return (
-      <TouchableOpacity style={styles.addBtn} onPress={onPress}>
+      <Pressable style={styles.addBtn} onPress={onPress}>
         <Image source={Images.plus} style={styles.addImage} />
-      </TouchableOpacity>
+      </Pressable>
     );
   });
 
