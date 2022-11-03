@@ -52,8 +52,8 @@ const Home = ({navigation}) => {
       animatedScale: new Animated.Value(0),
       animatedParams: new Animated.ValueXY(Constants.moveFrom),
       moveTo: {
-        x: Constants.screenWidth / 3.2,
-        y: Constants.screenHeight / 1.55,
+        x: Constants.screenWidth / 3.1,
+        y: Constants.screenHeight / 1.6,
       },
     },
   ];
