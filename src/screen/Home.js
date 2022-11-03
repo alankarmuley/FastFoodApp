@@ -20,12 +20,7 @@ const Home = ({navigation}) => {
   const {addToCart, total} = useOrder();
   const [currentPageIndex , setCurrentPageIndex] = useState(0); 
   const fadeAnim = useRef(new Animated.Value(1)).current;
-  const spinanim = useRef(new Animated.Value(0)).current;
-
-  const spinStar = spinanim.interpolate({
-    inputRange: [0, 1, 2],
-    outputRange: ['0deg', '-90deg', '90deg'],
-  });
+  const scrollX = useRef(new Animated.Value(0)).current;
 
   const fastFood = [
     {
@@ -34,8 +29,9 @@ const Home = ({navigation}) => {
       price: 4,
       cardImage: Images.friedBig,
       movingImage: Images.fray,
+      animatedScale: new Animated.Value(0),
       animatedParams: new Animated.ValueXY(Constants.moveFrom),
-      moveTo: {x: Constants.screenWidth / 2.5, y: Constants.screenHeight / 1.7},
+      moveTo: {x: Constants.screenWidth / 2.2, y: Constants.screenHeight / 1.9},
     },
     {
       id: '2',
@@ -43,8 +39,9 @@ const Home = ({navigation}) => {
       price: 3,
       cardImage: Images.coke,
       movingImage: Images.coffee,
+      animatedScale: new Animated.Value(0),
       animatedParams: new Animated.ValueXY(Constants.moveFrom),
-      moveTo: {x: Constants.screenWidth / 2.0, y: Constants.screenHeight / 1.6},
+      moveTo: {x: Constants.screenWidth / 1.9, y: Constants.screenHeight / 1.7},
     },
     {
       id: '3',
@@ -52,6 +49,7 @@ const Home = ({navigation}) => {
       price: 6,
       cardImage: Images.burgerBig,
       movingImage: Images.hanbao,
+      animatedScale: new Animated.Value(0),
       animatedParams: new Animated.ValueXY(Constants.moveFrom),
       moveTo: {
         x: Constants.screenWidth / 3.2,
@@ -67,7 +65,10 @@ const Home = ({navigation}) => {
       toValue: currentItem.moveTo,
       useNativeDriver: false,
     }).start(() => {addToCart(currentItem);});
-    // 
+    Animated.spring(currentItem.animatedScale, {
+      toValue: 2,
+      useNativeDriver: false,
+    }).start();
   };
 
   const onViewableItemsChanged = useRef(({ viewableItems }) => {
@@ -77,18 +78,13 @@ const Home = ({navigation}) => {
   const onMomentumScrollEnd = () => {
     Animated.timing(fadeAnim, {
       toValue: 1,
-      duration: 1600,
-      useNativeDriver: true,
-    }).start();
-    Animated.timing(spinanim, {
-      toValue: currentPageIndex,
-      duration: 300,
+      duration: 400,
       useNativeDriver: true,
     }).start();
   };
 
-  const renderItem = ({item}) => (
-    <FoodItem item={item} fadeAnim={fadeAnim} spinanim={spinStar} />
+  const renderItem = ({item ,index}) => (
+    <FoodItem item={item} index={index} fadeAnim={fadeAnim} scrollX={scrollX} />
   );
 
   const AddButton = React.memo(({onPress}) => {
@@ -102,19 +98,24 @@ const Home = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      <FlatList
+      <Animated.FlatList
         data={fastFood}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         horizontal={true}
+        bounces={false}
         decelerationRate={0}
         snapToInterval={Constants.screenWidth}
-        snapToAlignment={'center'}
+        snapToAlignment='start'
+        scrollEventThrottle={16}
         showsHorizontalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: false }
+        )}
         onMomentumScrollBegin={() => {
-          fadeAnim.setValue(0);
-          spinanim.setValue(currentPageIndex);
+          fadeAnim.setValue(0.5);
         }}
         onMomentumScrollEnd={onMomentumScrollEnd}
         viewabilityConfig={{
@@ -126,13 +127,15 @@ const Home = ({navigation}) => {
         source={Images.tray}
         style={styles.trayImage}
       />
-      {fastFood.map((item, index) => (
-        <Animated.Image
+      {fastFood.map((item, index) => {
+        const animationScale = { transform: [{scale: item.animatedScale}]}
+        return (<Animated.Image
           key={index}
           source={item.movingImage}
-          style={[styles.movingImage, item.animatedParams.getLayout()]}
-        />
-      ))}
+          style={[styles.movingImage, animationScale,  item.animatedParams.getLayout()]}
+        />)
+      }
+      )}
       <AddressBar />
       <PayBar total={total} onPress={()=> navigation.navigate('Pay')}/>
       <AddButton onPress={moveItemToTray} />
@@ -152,11 +155,11 @@ const styles = StyleSheet.create({
     top: Constants.plusButtonTopMargin,
   },
   addImage: {
-    height: 120,
-    width: 120,
+    height: 90,
+    width: 90,
   },
   trayImage: {
-    width: Constants.screenWidth / 1.6,
+    width: Constants.screenWidth / 1.1,
     alignSelf: 'center',
   },
   movingImage: {

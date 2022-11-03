@@ -2,27 +2,92 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Animated, Image} from 'react-native';
 import {Images, Constants, Colors} from '@common';
 
-const Stars = ({spinanim}) => {
-  return (
-    <Animated.View
-      style={[styles.starContainer, {transform: [{rotate: spinanim}]}]}>
-      <Image resizeMode="contain" source={Images.star} style={styles.star} />
-      <Image resizeMode="contain" source={Images.star} style={styles.star1} />
-      <Image resizeMode="contain" source={Images.star} style={styles.star2} />
-    </Animated.View>
-  );
-};
+const FoodItem = ({item, index, fadeAnim, spinanim, scrollX}) => {
+  const ITEM_SIZE = Constants.screenWidth;
+  const inputRange = [
+    (index - 2) * ITEM_SIZE,
+    (index - 1) * ITEM_SIZE,
+    index * ITEM_SIZE,
+  ];
+  const translateY = scrollX.interpolate({
+    inputRange,
+    outputRange: [0, 40, 0],
+    extrapolate: 'clamp',
+  });
 
-const FoodItem = ({item, fadeAnim, spinanim}) => {
+  const animStyle = {
+    transform: [
+      {
+        translateY,
+      },
+      {
+        translateX: translateY,
+      },
+    ],
+  };
+
+  const translateStarY = scrollX.interpolate({
+    inputRange,
+    outputRange: [0, 50, 150],
+    extrapolate: 'clamp',
+  });
+
+  const animStartStyle = {
+    transform: [
+      {
+        translateY: translateStarY,
+      },
+      {
+        translateX: translateStarY,
+      },
+    ],
+  };
+
+  const translateStar1Y = scrollX.interpolate({
+    inputRange,
+    outputRange: [0, -150, 0],
+    extrapolate: 'clamp',
+  });
+
+  const animStart1Style = {
+    transform: [
+      {
+        translateX: translateStar1Y,
+      },
+    ],
+  };
+
+  const translateStar2Y = scrollX.interpolate({
+    inputRange,
+    outputRange: [0, 80, 0],
+    extrapolate: 'clamp',
+  });
+
+  const animStart2Style = {
+    transform: [
+      {
+        translateX: translateStar2Y,
+      },
+      {
+        translateY: translateStarY,
+      },
+     
+    ],
+  };
+
   return (
     <View style={styles.item}>
       <View style={styles.container}>
-        <Image
-        resizeMode="contain"
+        <Animated.Image
+          resizeMode="contain"
           source={item.cardImage}
-          style={styles.food}
+          style={[styles.food, animStyle]}
         />
-        <Stars spinanim={spinanim} />
+        <Animated.View style={[styles.starContainer]}>
+      <Animated.Image resizeMode="contain" source={Images.star} style={[styles.star,animStartStyle] } />
+      <Animated.Image resizeMode="contain" source={Images.star} style={[styles.star1, animStart1Style]} />
+      <Animated.Image resizeMode="contain" source={Images.star} style={[styles.star2,  animStart2Style]} />
+    </Animated.View>
       </View>
       <Animated.View style={[styles.container, {opacity: fadeAnim}]}>
         <Text style={styles.title}>
@@ -79,11 +144,11 @@ const styles = StyleSheet.create({
   },
   star2: {
     position: 'absolute',
-    bottom: 10,
-    height: 10,
-    width: 10,
+    top: 20,
+    height: 20,
+    width: 20,
   },
   food: {
-    height: Constants.screenWidth/1.5,
+    height: Constants.screenWidth / 1.5,
   },
 });
